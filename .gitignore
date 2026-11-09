@@ -1,0 +1,19 @@
+# --- Secrets: NEVER commit the real env file ---
+.env
+
+# --- Python ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# --- Node / Next.js ---
+node_modules/
+.next/
+npm-debug.log*
+
+# --- OS / editor noise ---
+.DS_Store
+*.swp
+.idea/
+.vscode/
