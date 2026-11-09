@@ -1,0 +1,19 @@
+# Files NEVER copied into the image => smaller, faster, more secure builds.
+# (Prevents secrets and junk from leaking into layers.)
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+.env                 # NEVER bake real secrets into an image
+.git/
+.gitignore
+.pytest_cache/
+.mypy_cache/
+*.md
+Dockerfile
+.dockerignore
