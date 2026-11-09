@@ -76,13 +76,30 @@ docker compose down -v       # also DELETES the database volume (full reset)
 | POST   | `/events/{id}/bookings` | Book tickets for an event |
 | GET    | `/health` | Health check |
 
-## 📸 Screenshots
+## 📸 Project Screenshots
 
-> _Replace these placeholders with your own screenshots._
+Berikut adalah bukti implementasi dan pengujian project EventHub sesuai dengan kriteria penilaian.
 
-| Containers running | Web UI |
-|--------------------|--------|
-| _(screenshot of `docker compose ps`)_ | _(screenshot of http://localhost:3000)_ |
+### 1. Docker Containers Status (SS-1)
+Perintah `docker compose ps` menunjukkan bahwa keempat container (`backend`, `frontend`, `db`, `cache`) berhasil berjalan. Container database dan cache berstatus **healthy**, menandakan konfigurasi *healthcheck* berfungsi dengan baik.
+<img width="1156" height="76" alt="Screenshot 2026-11-09 at 17 00 51" src="https://github.com/user-attachments/assets/1e607c10-ce78-4d74-bf0a-dad510cf437a" />
+
+### 2. Docker Image Size (SS-2)
+Perintah `docker images` membuktikan bahwa implementasi **multi-stage build** pada Dockerfile berhasil. Ukuran image akhir tetap kecil dan ringan karena hanya berisi *runtime* yang dibutuhkan, tanpa menyertakan *tools* build.
+<img width="688" height="36" alt="Screenshot 2026-11-09 at 17 09 23" src="https://github.com/user-attachments/assets/f541be86-9360-4a76-b173-cf65db77b282" />
+
+### 3. API Testing - CRUD (SS-3)
+Pengujian endpoint menggunakan Swagger UI (`/docs`) atau `curl`. Gambar di bawah menunjukkan respons JSON yang berhasil dibuat dengan status `200 OK`, membuktikan bahwa operasi CRUD (Create & Read) berjalan dengan baik.
+<img width="649" height="244" alt="Screenshot 2026-04-24 at 00 36 25" src="https://github.com/user-attachments/assets/73d69905-c4e4-413f-a461-04c638733d01" />
+
+### 4. Frontend UI (SS-4)
+Tampilan antarmuka web EventHub yang diakses melalui `http://localhost:3000`. Halaman ini berhasil menampilkan data event yang diambil dari backend dan database.
+<img width="1470" height="956" alt="Screenshot 2026-11-09 at 16 45 17" src="https://github.com/user-attachments/assets/d6a05082-bb1e-4507-9b04-5df6eb637a21" />
+
+### 5. Data Persistence Test (SS-5)
+Bukti bahwa **Named Volume** bekerja dengan sempurna. Setelah container dimatikan (`docker compose down`) dan dinyalakan kembali (`docker compose up -d`), data event masih tetap ada dan tidak hilang.
+<img width="573" height="198" alt="Screenshot 2026-11-09 at 17 13 14" src="https://github.com/user-attachments/assets/1f8ed9c1-e389-4aa1-84c7-d52ee485537e" />
+
 
 ## 🔗 Links
 
