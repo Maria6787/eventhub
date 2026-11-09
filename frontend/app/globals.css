@@ -92,3 +92,30 @@ button:hover {
   color: #94a3b8;
   font-style: italic;
 }
+
+/* --- Action buttons on each event card (Edit / Delete) --- */
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+
+/* Secondary button (Edit / Cancel): outlined, neutral */
+.btn-secondary {
+  background: transparent;
+  color: #38bdf8;
+  border: 1px solid #38bdf8;
+}
+.btn-secondary:hover {
+  background: #38bdf8;
+  color: #0f172a;
+}
+
+/* Danger button (Delete): red */
+.btn-danger {
+  background: #ef4444; /* red-500 */
+  color: #fff;
+}
+.btn-danger:hover {
+  background: #dc2626; /* red-600 */
+}
