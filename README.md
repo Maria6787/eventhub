@@ -103,8 +103,8 @@ Bukti bahwa **Named Volume** bekerja dengan sempurna. Setelah container dimatika
 
 ## 🔗 Links
 
-- 📹 **Video demo (YouTube):** _<paste your YouTube link here>_
-- ✍️ **Article (Medium/dev.to):** _<paste your article link here>_
+- 📹 **Video demo (YouTube):[** _<paste your YouTube link here>_](https://youtu.be/0CaJaDryfLo?si=1cKyswoHHLoY237L)
+- ✍️ **Article (LinkedIn):** _<paste your article link here>_
 - 📄 **Full report:** The complete cloud analysis and architecture rationale are in the submitted UTS PDF report.
 
 ## 🤖 AI Usage Declaration
