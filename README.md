@@ -94,7 +94,7 @@ Pengujian endpoint menggunakan Swagger UI (`/docs`) atau `curl`. Gambar di bawah
 
 ### 4. Frontend UI (SS-4)
 Tampilan antarmuka web EventHub yang diakses melalui `http://localhost:3000`. Halaman ini berhasil menampilkan data event yang diambil dari backend dan database.
-<img width="1470" height="956" alt="Screenshot 2026-11-09 at 16 45 17" src="https://github.com/user-attachments/assets/d6a05082-bb1e-4507-9b04-5df6eb637a21" />
+<img width="1470" height="956" alt="Screenshot 2026-11-10 at 03 39 03" src="https://github.com/user-attachments/assets/7cf426ee-b793-4027-afef-6300106b6bb4" />
 
 ### 5. Data Persistence Test (SS-5)
 Bukti bahwa **Named Volume** bekerja dengan sempurna. Setelah container dimatikan (`docker compose down`) dan dinyalakan kembali (`docker compose up -d`), data event masih tetap ada dan tidak hilang.
@@ -103,7 +103,7 @@ Bukti bahwa **Named Volume** bekerja dengan sempurna. Setelah container dimatika
 
 ## 🔗 Links
 
-- 📹 **Video demo (YouTube):[** _< Building EventHub: Multi-Tier Architecture with Docker Compose & FastAPI (UTS Project)>_](https://youtu.be/0CaJaDryfLo?si=1cKyswoHHLoY237L)
+- 📹 **Video demo (YouTube):[** _< Building EventHub: Multi-Tier Architecture with Docker Compose & FastAPI (UTS Project)>_](https://youtu.be/D6hzUqDPxgo?si=ELw-k1GKrQHoUGL2)
 - ✍️ **Article (LinkedIn):[** _< Building EventHub: A Fully Containerized 3-Tier App with FastAPI, Next.js & Docker>_](https://www.linkedin.com/pulse/building-eventhub-fully-containerized-3-tier-app-fastapi-alfianto-176vc/)
 - 📄 **Full report:** The complete cloud analysis and architecture rationale are in the submitted UTS PDF report.
 
