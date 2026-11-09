@@ -31,11 +31,14 @@ type EventItem = {
 };
 
 // The shape of the create/edit form (without the server-generated id).
+// NOTE: capacity & price are kept as STRINGS here (not numbers). This lets the
+// input box be truly empty instead of showing a stuck leading "0" (which caused
+// "030000" when typing). We convert them to numbers only when submitting.
 type EventForm = {
   title: string;
   location: string;
-  capacity: number;
-  price: number;
+  capacity: string;
+  price: string;
   event_date: string;
   description: string;
 };
@@ -43,8 +46,8 @@ type EventForm = {
 const emptyForm: EventForm = {
   title: "",
   location: "",
-  capacity: 50,
-  price: 0,
+  capacity: "50",
+  price: "",
   event_date: "",
   description: "",
 };
@@ -91,8 +94,9 @@ export default function Home() {
 
     const body = JSON.stringify({
       ...form,
-      capacity: Number(form.capacity),
-      price: Number(form.price),
+      // Convert the string inputs to numbers; empty string becomes 0.
+      capacity: Number(form.capacity) || 0,
+      price: Number(form.price) || 0,
       event_date: new Date(form.event_date).toISOString(),
     });
 
@@ -124,8 +128,9 @@ export default function Home() {
     setForm({
       title: ev.title,
       location: ev.location,
-      capacity: ev.capacity,
-      price: ev.price,
+      // Convert numbers to strings for the text/number inputs.
+      capacity: String(ev.capacity),
+      price: String(ev.price),
       event_date: toLocalInput(ev.event_date),
       description: ev.description ?? "",
     });
@@ -180,15 +185,18 @@ export default function Home() {
           />
           <input
             type="number"
-            placeholder="Capacity"
+            min="0"
+            placeholder="Capacity (e.g. 50)"
             value={form.capacity}
-            onChange={(e) => setForm({ ...form, capacity: Number(e.target.value) })}
+            // Store the raw string so the box can be empty (no stuck leading 0).
+            onChange={(e) => setForm({ ...form, capacity: e.target.value })}
           />
           <input
             type="number"
-            placeholder="Price"
+            min="0"
+            placeholder="Price (e.g. 30000)"
             value={form.price}
-            onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
+            onChange={(e) => setForm({ ...form, price: e.target.value })}
           />
           <input
             type="datetime-local"
