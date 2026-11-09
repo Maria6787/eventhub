@@ -1,0 +1,114 @@
+# =============================================================================
+# EventHub — Docker Compose orchestration
+# Services: db (PostgreSQL), backend (FastAPI), frontend (Next.js),
+#           cache (Redis, BONUS), pgadmin (profile-gated admin UI).
+# All services share ONE user-defined network so they reach each other by name.
+# =============================================================================
+
+services:
+  # ---------------- DATABASE (PostgreSQL) ----------------
+  db:
+    image: postgres:16-alpine            # pinned tag, small alpine base
+    container_name: eventhub-db
+    restart: unless-stopped
+    # Credentials come from the .env file (never hard-coded here).
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      # NAMED VOLUME => data survives `docker compose down` (persistence proof).
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - eventhub-net
+    # HEALTHCHECK: Compose uses this to know when Postgres is truly READY,
+    # not just started. pg_isready exits 0 only when it can accept connections.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ---------------- BACKEND (FastAPI) ----------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: eventhub-backend
+    restart: unless-stopped
+    # Build the DB URL from the same env vars. Host = "db" (the service name),
+    # resolved via the user-defined network's internal DNS.
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      # REDIS_URL enables the BONUS cache. Host "cache" = the redis service name.
+      REDIS_URL: redis://cache:6379/0
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"     # host:container (default 8000)
+    networks:
+      - eventhub-net
+    # Wait until the DB HEALTHCHECK passes before starting the API.
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # ---------------- FRONTEND (Next.js) ----------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # Baked into the client bundle at build time (browser-visible URL).
+        NEXT_PUBLIC_API_URL: http://localhost:${BACKEND_PORT:-8000}
+    container_name: eventhub-frontend
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:${BACKEND_PORT:-8000}
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    networks:
+      - eventhub-net
+    depends_on:
+      - backend
+
+  # ---------------- CACHE (Redis) — BONUS ----------------
+  cache:
+    image: redis:7-alpine
+    container_name: eventhub-cache
+    restart: unless-stopped
+    networks:
+      - eventhub-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ---------------- pgAdmin (PROFILE-GATED) ----------------
+  # Only starts when you opt in:  docker compose --profile admin up -d
+  # Keeps the default stack lean while offering a DB GUI on demand.
+  pgadmin:
+    image: dpage/pgadmin4:8.12
+    container_name: eventhub-pgadmin
+    restart: unless-stopped
+    profiles: ["admin"]                  # <-- the required PROFILE
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@eventhub.local}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - eventhub-net
+    depends_on:
+      - db
+
+# ---------------- USER-DEFINED NETWORK ----------------
+# A dedicated bridge network. Isolation + automatic DNS so services address
+# each other by name (backend -> "db", backend -> "cache").
+networks:
+  eventhub-net:
+    driver: bridge
+
+# ---------------- NAMED VOLUMES ----------------
+volumes:
+  db_data:        # managed by Docker; persists Postgres data across restarts
