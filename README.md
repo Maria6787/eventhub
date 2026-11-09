@@ -103,8 +103,8 @@ Bukti bahwa **Named Volume** bekerja dengan sempurna. Setelah container dimatika
 
 ## 🔗 Links
 
-- 📹 **Video demo (YouTube):[** _<paste your YouTube link here>_](https://youtu.be/0CaJaDryfLo?si=1cKyswoHHLoY237L)
-- ✍️ **Article (LinkedIn):[** _<paste your article link here>_](https://www.linkedin.com/pulse/building-eventhub-fully-containerized-3-tier-app-fastapi-alfianto-176vc/)
+- 📹 **Video demo (YouTube):[** _< Building EventHub: Multi-Tier Architecture with Docker Compose & FastAPI (UTS Project)>_](https://youtu.be/0CaJaDryfLo?si=1cKyswoHHLoY237L)
+- ✍️ **Article (LinkedIn):[** _< Building EventHub: A Fully Containerized 3-Tier App with FastAPI, Next.js & Docker>_](https://www.linkedin.com/pulse/building-eventhub-fully-containerized-3-tier-app-fastapi-alfianto-176vc/)
 - 📄 **Full report:** The complete cloud analysis and architecture rationale are in the submitted UTS PDF report.
 
 ## 🤖 AI Usage Declaration
